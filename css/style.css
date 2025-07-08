@@ -1,0 +1,24 @@
+.container {
+    /* max-width: 600px; */
+    margin: 0 auto;
+  }
+  
+  .table {
+    margin-top: 20px;
+  }
+  
+  .table th {
+    cursor: pointer;
+  }
+  
+  .table th:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .table td {
+    vertical-align: middle;
+  }
+
+  .map-icon {
+    cursor: pointer;
+  }
