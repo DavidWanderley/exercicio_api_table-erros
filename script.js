@@ -1,42 +1,51 @@
-const tableBody = document.getElementById('.tableBody');
+const uri = "https://jsonplaceholder.typicode.com/users/";
 
-  //criar a div que terá o mapa
-  const divMap = document.querySelector('div');
-  divMap.id = 'map'
-  divMap.style.height = '50em';
-  divMap.style.width = '100%';
+
+//criar a div que terá o mapa
+const divMap = document.querySelector("div");
+divMap.id = "map";
+divMap.style.height = "50em";
+divMap.style.width = "100%";
 
 let usersData = [];
 
-fetch('https://jsonplaceholder.typicode.com/users/')
-  .then(response => response.json())
-  .then(data => {
-    usersData = data;
-    renderTableRows();
-  });
+async function getUsersData() {
+  try {
+    const response = await fetch(uri);
+    const user = await response.json();
+    usersData = user;
+    renderTableRows(usersData);
+  } catch (error) {
+    console.error("Teve um erro!!", error);
+  }
+}
 
-filterInputName.addEventListener('keyup', filterRows);
+getUsersData();
+
+filterInputName.addEventListener("keyup", filterRows);
 //filterInputEmail.addEventListener('keyup', filterRows);
 
 const renderTableRows = (data) => {
-  let tableRows = '';
+  let tableRows = "";
 
-  data.forEach(user => {
-    user['fullAdress'] = `${user.adress.street}, ${user.addres.suite} - ${user.adress.city} | ${user.address.suite}, ZIP: ${user.address.zipcode}  `
-    //console.log(user)
+
+  data.forEach((user) => {
+    user[
+      "fulladdress"
+    ] = `${user.address.street}, ${user.address.suite} - ${user.address.city}, ZIP: ${user.address.zipcode}  `;
   });
 
-  //console.log('data', data)
-  data.forEach(user => {
+  //console.log("data:", data);
+  data.forEach((user) => {
     tableRows += `
-      <tr >
+      <tr>
         <td>${user.id}</td>
         <td>${user.name}</td>
         <td>${user.email}</td>
         <td>${user.username}</td>
         <td>${user.website}</td>
         <td>${user.address.geo.lat}, ${user.address.geo.lng}</td>
-        <td>${user.fullAddress}</td>
+        <td>${user.fulladdress}</td>
         <td data-bs-toggle="tooltip" title="Ver no mapa">
           <img src="assets/map_512.png"
             height='25px' 
@@ -49,20 +58,21 @@ const renderTableRows = (data) => {
     `;
   });
 
-  tableBody = tableRows;
-}
+
+  tableBody.innerHTML = tableRows;
+};
 
 function filterRows() {
   const filterValueName = filterInputName.value.toLowerCase();
 
-
-  const filteredData = usersData.map(user =>
-    user.name.toLowerCase() === (filterValueName) ||
-    user.email.toLowerCase() === (filterValueName) ||
-    user.fullAddress.toLowerCase().includes(filterValueName)
+  const filteredData = usersData.map(
+    (user) =>
+      user.name.toLowerCase() === filterValueName ||
+      user.email.toLowerCase() === filterValueName ||
+      user.fullAddress.toLowerCase().includes(filterValueName)
   );
 
-  console.log(filteredData)
+  console.log(filteredData);
 
   renderTableRows(filteredData);
 }
@@ -71,7 +81,7 @@ function filterRows() {
 let map;
 
 async function initMap(lat, long, name) {
-  const mainDiv = document.querySelector('#main');
+  const mainDiv = document.querySelector("#main");
 
   // The location of Uluru
   const position = { lat: parseFloat(lat), lng: parseFloat(long) };
@@ -79,7 +89,7 @@ async function initMap(lat, long, name) {
   //@ts-ignore
   const { Map } = await google.maps.importLibrary("maps");
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-  console.log(`geo:`, position)
+  console.log(`geo:`, position);
   // The map, centered at Uluru
   map = new Map(mainDiv, {
     zoom: 5,
@@ -92,10 +102,10 @@ async function initMap(lat, long, name) {
   new AdvancedMarkerElement({
     map: map,
     position: position,
-    title: name
+    title: name,
   });
 
-  mainDiv = (mainDiv);
+  mainDiv = mainDiv;
 }
 
 //initMap();
