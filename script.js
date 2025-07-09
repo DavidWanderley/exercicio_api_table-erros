@@ -1,4 +1,5 @@
 const uri = "https://jsonplaceholder.typicode.com/users/";
+let tableBody = document.getElementById("tableBody");
 
 
 //criar a div que terá o mapa
@@ -65,11 +66,12 @@ const renderTableRows = (data) => {
 function filterRows() {
   const filterValueName = filterInputName.value.toLowerCase();
 
-  const filteredData = usersData.map(
-    (user) =>
-      user.name.toLowerCase() === filterValueName ||
-      user.email.toLowerCase() === filterValueName ||
-      user.fullAddress.toLowerCase().includes(filterValueName)
+ const filteredData = usersData.filter((user) =>
+    user.name.toLowerCase().includes(filterValueName) ||
+    user.email.toLowerCase().includes(filterValueName) ||
+    user.fulladdress.toLowerCase().includes(filterValueName) || // corrigido o nome da propriedade
+    user.username.toLowerCase().includes(filterValueName) || 
+    user.website.toLowerCase().includes(filterValueName)
   );
 
   console.log(filteredData);
